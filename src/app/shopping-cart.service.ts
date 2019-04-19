@@ -25,8 +25,7 @@ export class ShoppingCartService {
       .pipe(
         map(x => {
           console.log("map:" + x);
-
-          return new ShoppingCart(null);
+          return new ShoppingCart(x.items);
         })
       )
   }
