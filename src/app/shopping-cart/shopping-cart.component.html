@@ -1,0 +1,28 @@
+<h1>Shopping Cart</h1>
+<ng-container *ngIf="cart$ | async as cart">
+  <p>You have {{cart.totalItemsCount}} items in your shopping cart.</p>
+  <table class="table">
+    <thead>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of cart.items">
+        <td>
+          {{p.product.title}}
+        </td>
+        <td>
+          <product-quantity [product]="p.product" [shopping-cart]="cart"></product-quantity>
+        </td>
+        <td>{{p.totalPrice}}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <th></th>
+      <th></th>
+      <th>{{cart.totalPrice}}</th>
+    </tfoot>
+  </table>
+
+</ng-container>
