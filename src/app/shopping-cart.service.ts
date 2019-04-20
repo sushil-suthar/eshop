@@ -35,6 +35,12 @@ export class ShoppingCartService {
   async addToCart(product: Product) {
     this.updateItem(product, 1);
   }
+  async  deleteFromCart(product: Product) {
+    console.log("deleting");
+    let cartId = await this.getOrCreateCartId();
+    this.db.object('/shopping-carts/' + cartId + '/items/' + product.key).remove();
+
+  }
   removeFromCart(product: Product) {
     this.updateItem(product, -1);
   }
@@ -76,8 +82,14 @@ export class ShoppingCartService {
     )
       .subscribe(p => {
         cartItem.quantity = (p) ? p.quantity + change : 1;
-        console.log("to be updated quantity:" + cartItem.quantity);
-        this.updateQuantity(cartItem, cartId, product.key);
+        if (cartItem.quantity === 0) {
+          console.log("delete form cart");
+          this.deleteFromCart(product);
+        }
+        else {
+          console.log("to be updated quantity:" + cartItem.quantity);
+          this.updateQuantity(cartItem, cartId, product.key);
+        }
       })
   }
   private updateQuantity(productCart: ShoppingCartItem, cartId: string, key: string) {
