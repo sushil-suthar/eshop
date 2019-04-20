@@ -1,5 +1,8 @@
 import { Product } from './product';
 export class ShoppingCartItem {
+    constructor(init?: Partial<ShoppingCartItem>) {
+        Object.assign(this, init);
+    }
     key: string;
     title: string;
     price: number;
