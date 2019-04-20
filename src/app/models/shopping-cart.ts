@@ -2,14 +2,21 @@ import { ShoppingCartItem } from './shopping-cart-item';
 import { Product } from './product';
 export class ShoppingCart {
     items: ShoppingCartItem[] = [];
+
     constructor(
         public itemsMap:
             { [id: string]: ShoppingCartItem }
     ) {
+        this.itemsMap = itemsMap || {};
+
         console.log("ctor:" + itemsMap)
         for (let productId in itemsMap) {
             console.log(productId);
-            this.items.push(new ShoppingCartItem(itemsMap[productId].product, itemsMap[productId].quantity));
+            let item = itemsMap[productId];
+            let x = new ShoppingCartItem();
+            Object.assign(x, item);
+            x.key = productId;
+            this.items.push(x);
         }
 
     }

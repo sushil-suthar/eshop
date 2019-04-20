@@ -1,3 +1,4 @@
+import { ProductQuantityComponent } from './product-quantity/product-quantity.component';
 import { take, map, filter } from 'rxjs/operators';
 import { Product } from './models/product';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
@@ -42,46 +43,37 @@ export class ShoppingCartService {
     return this.db.object<ShoppingCartItem>('/shopping-carts/' + cartId + '/items/' + productId).valueChanges()
   }
   async addToCart(product: Product) {
-    this.updateItemQuantity(product, 1);
+    this.updateItem(product, 1);
   }
   removeFromCart(product: Product) {
-    this.updateItemQuantity(product, -1);
+    this.updateItem(product, -1);
   }
 
 
 
-
-
-
-
-
-
-
-  private async updateItemQuantity(product: Product, change: number) {
+  private async updateItem(product: Product, change: number) {
     let cartId = await this.getOrCreateCartId();
     console.log(cartId);
     let cartItem: ShoppingCartItem;
+    cartItem = new ShoppingCartItem();
 
-    let items$ = this.getItem(cartId, product.key);
-    items$.pipe(
+    cartItem.title = product.title;
+    cartItem.key = product.key;
+    cartItem.imageUrl = product.imageUrl;
+    cartItem.price = product.price;
+
+    let item$ = this.getItem(cartId, product.key);
+    item$.pipe(
       take(1)
     )
       .subscribe(p => {
-        if (p) {
-          cartItem = p;
-          cartItem.quantity += change;
-          this.updateQuantity(cartItem, cartId, product.key);
-        }
-        else {
-          console.log("not exists");
-          cartItem = new ShoppingCartItem(product, 1);
-
-          this.updateQuantity(cartItem, cartId, product.key);
-        }
+        cartItem.quantity = (p) ? p.quantity + change : 0;
+        console.log("to be updated quantity:" + cartItem.quantity);
+        this.updateQuantity(cartItem, cartId, product.key);
       })
   }
-  updateQuantity(productCart: ShoppingCartItem, cartId: string, key: string) {
-    console.log("updateing quantity");
+  private updateQuantity(productCart: ShoppingCartItem, cartId: string, key: string) {
+    console.log("updateing product in cart");
     console.log(productCart);
     let items = this.db.object('/shopping-carts/' + cartId + '/items/' + key).update(productCart);
     items.then(() =>

@@ -14,6 +14,7 @@ export class ProductQuantityComponent implements OnInit {
   constructor(private cartService: ShoppingCartService) { }
 
   addToCart() {
+    console.log("add to cart~" + this.product);
     this.cartService.addToCart(this.product);
 
   }

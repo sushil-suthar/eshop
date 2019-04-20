@@ -10,10 +10,10 @@
     <tbody>
       <tr *ngFor="let p of cart.items">
         <td>
-          {{p.product.title}}
+          {{p.title}}
         </td>
         <td>
-          <product-quantity [product]="p.product" [shopping-cart]="cart"></product-quantity>
+          <product-quantity [product]="p" [shopping-cart]="cart"></product-quantity>
         </td>
         <td>{{p.totalPrice}}</td>
       </tr>
