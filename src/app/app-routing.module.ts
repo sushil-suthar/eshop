@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
 
   { path: 'check-out', component: CheckOutComponent, canActivate: [AuthGuard] },
-  { path: 'order-success', component: OrderSuccessComponent, canActivate: [AuthGuard] },
+  { path: 'order-success/:id', component: OrderSuccessComponent, canActivate: [AuthGuard] },
   { path: 'my/orders', component: MyOrdersComponent, canActivate: [AuthGuard] },
 
 

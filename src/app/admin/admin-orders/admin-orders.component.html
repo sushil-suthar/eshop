@@ -1,3 +1,20 @@
-<p>
-  admin-orders works!
-</p>
+<p>All Orders</p>
+
+<table class="table" *ngIf="orders$ | async as orders">
+  <thead>
+    <tr>
+      <th>Customer</th>
+      <th>Product Count</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let o of orders">
+      <td>{{o.shipping.name}}</td>
+      <td>{{o.items.length}}</td>
+      <td>
+        <a href="#">View</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
